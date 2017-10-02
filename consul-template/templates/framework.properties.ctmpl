@@ -1,0 +1,24 @@
+# framework.properties
+#
+framework.server.name={{ or (env "RDECK_SERVER_NAME") "localhost" }}
+framework.server.hostname={{ or (env "RDECK_SERVER_HOSTNAME") "localhost" }}
+framework.server.port={{ or (env "RDECK_HTTP_PORT") "4440" }}
+framework.server.url={{ or (env "RDECK_SERVER_URL") "http://localhost:4440" }}
+
+rdeck.base=/opt/rundeck
+
+framework.projects.dir=/opt/rundeck/projects
+framework.etc.dir=/opt/rundeck/etc
+framework.var.dir=/opt/rundeck/var
+framework.tmp.dir=/opt/rundeck/var/tmp
+framework.logs.dir=/opt/rundeck/var/logs
+framework.libext.dir=/opt/rundeck/libext
+
+framework.ssh.keypath=/root/.ssh/id_rsa
+framework.ssh.user=root
+
+{{ if env "RDECK_SERVER_UUID" }}rundeck.server.uuid={{ env "RDECK_SERVER_UUID" }}{{ end }}
+
+# Properties from Consul
+{{- range printf "%s/framework.properties/" (env "CONSUL_PREFIX") | ls }}
+{{ .Key }}:{{ .Value }}{{ end }}
