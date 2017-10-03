@@ -31,8 +31,11 @@ RUN \
   max=15 \
   && failed=true \
   && for i in $(seq 1 $max); do \
-    if curl -fsL http://localhost:4440 > /dev/null 2>&1; then failed=false; break; fi \
-    && sleep 5 \
+    if [ -f "$RDECK_BASE/etc/framework.properties" ]; then \
+      failed=false; \
+      break; \
+    fi \
+    && sleep 10 \
   ; done \
   && if [ "$failed" = true ]; then echo "Rundeck failed to initialize"; exit 1; fi \
   && kill "$(jobs -p)" \

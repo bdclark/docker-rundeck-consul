@@ -1,0 +1,25 @@
+---
+version: '3'
+services:
+  rundeck:
+    build:
+      context: ./
+    ports:
+      - "4440:4440"
+    environment:
+      CONSUL_HTTP_ADDR: consul:8500
+  mysql:
+    image: mysql:5.6
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+  consul:
+    image: consul
+    ports:
+      - "8500:8500"
+  bcr:
+    build:
+      context: ./chef-rundeck
+    ports:
+      - "3000:3000"
